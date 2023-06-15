@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<form class="formcon"  method="post">
+             <div>
+                <label>Email</label><br>
+                <input type="text" placeholder="enter your email "name="Name" id="Name">
+               
+            </div>
+            <div class="button">
+                <button class="btn">Submit</button>
+            </div>
+</form>
+            <script>
+
+
+let Name = document.getElementById('Name');
+
+
+
+// OTP Generator
+function generateOTP() {
+    // Generate a random number between 100000 and 999999
+    const otp = Math.floor(Math.random() * 900000) + 100000;
+    
+    // Return the OTP as a string
+    return otp.toString();
+  }
+
+  const otp = generateOTP();
+
+
+
+let btn = document.querySelector('.btn');
+
+btn.addEventListener('click',()=>{
+    
+    console.log(Name.value);
+    event.preventDefault();
+    console.log(otp);
+    console.log(Name.value);
+    console.log(`{"personalizations":[{"to":[{"email":\`${Name.value}\`}],"subject":"Mess OTP"}],"from":{"email":"from_address@example.com"},"content":[{"type":"text/plain","value":\`Your OTP is ${otp}\`}]}`)
+    // API Call
+    const options = {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'X-RapidAPI-Key': '2ee7a3a282msha44f9020ed0b6d2p1c3cf4jsn203bdbd48afa',
+            'X-RapidAPI-Host': 'rapidprod-sendgrid-v1.p.rapidapi.com'
+        },
+        body: `{"personalizations":[{"to":[{"email":\`${Name.value}\`}],"subject":"Mess OTP"}],"from":{"email":"from_address@example.com"},"content":[{"type":"text/plain","value":\`Your OTP is ${otp}\`}]}`
+    };
+
+    fetch('https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send', options)
+        .then(response => response.json())
+        .then(response => console.log(response))
+        .catch(err => console.error(err));
+})
+
+
+
+
+
+            </script>
+</body>
+</html>
